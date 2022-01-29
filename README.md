@@ -1,3 +1,6 @@
+This project is deployed at well-off-rabbits.surge.sh 
+(previously at zany-crook.surge.sh, and decide to change to fix navigation logic)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

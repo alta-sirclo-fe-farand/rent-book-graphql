@@ -1,7 +1,13 @@
-import { useEffect, useState } from "react";
+// Dependencies
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_USERS, PUT_USERS } from "../queries/queries";
+
+// Queries and Mutations
+import { GET_USERS_BY_ID, PUT_USERS } from "../queries/queries";
+
+// Components
+import Header from "../components/header";
 
 const Edit = () => {
   const navigate = useNavigate();
@@ -11,61 +17,76 @@ const Edit = () => {
     email: "",
     password: "",
   });
-  const { loading, error, data } = useQuery(GET_USERS);
-  const [handleProfileChanges] = useMutation(PUT_USERS);
 
-  const handleEdit = (item: any) => {
-    handleProfileChanges({
-      variables: { id: idIdentifier },
-      optimisticResponse: true,
-      update: (caches) => {
-        const currentProfile: any = caches.readQuery({ query: GET_USERS });
-        const updatedProfile = currentProfile.users.map((user: any) => {
-          if (user.id === idIdentifier) {
-            return {
-              name: item.name,
-              email: item.email,
-              password: item.password,
-            };
-          } else {
-            return { ...user };
-          }
-        });
-        caches.writeQuery({
-          query: GET_USERS,
-          data: { user: updatedProfile },
-        });
-      },
+  useQuery(GET_USERS_BY_ID, {
+    variables: { id: idIdentifier },
+    onCompleted: (res) => {
+      setChanges({
+        ...changes,
+        name: res?.users?.[0]?.name,
+        email: res?.users?.[0]?.email,
+        password: res?.users?.[0]?.password,
+      });
+    },
+  });
+
+  const [editProfile] = useMutation(PUT_USERS, {
+    variables: {
+      id: idIdentifier,
+      name: changes.name,
+      email: changes.email,
+      password: changes.password,
+    },
+    onCompleted: () => {
+      navigate("/profile");
+    },
+  });
+
+  const handleOnChangeProfile = (event: any) => {
+    let value = event.target.value;
+    let name = event.target.name;
+
+    setChanges((prevalue) => {
+      return {
+        ...prevalue, // Spread Operator
+        [name]: value,
+      };
     });
-    navigate("/profile");
   };
 
   return (
-    <div>
-      <form>
+    <>
+      <Header />
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          editProfile();
+        }}
+      >
         Nama:
         <input
           type="text"
-          onChange={(e) => setChanges({ ...changes, name: e.target.value })}
+          name="name"
+          value={changes.name}
+          onChange={handleOnChangeProfile}
         />
         Email:
         <input
           type="text"
-          onChange={(e) => setChanges({ ...changes, email: e.target.value })}
+          name="email"
+          value={changes.email}
+          onChange={handleOnChangeProfile}
         />
         Password:
         <input
           type="password"
-          onChange={(e) => setChanges({ ...changes, password: e.target.value })}
+          name="password"
+          value={changes.password}
+          onChange={handleOnChangeProfile}
         />
-        <button type="submit" onClick={() => handleEdit(changes)}>
-          Save Changes
-        </button>
+        <button type="submit">Save Changes</button>
       </form>
-      {changes.name}
-      {changes.email}
-      {changes.password}
-    </div>
+    </>
   );
 };
 

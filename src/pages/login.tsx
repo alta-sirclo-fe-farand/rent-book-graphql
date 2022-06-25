@@ -40,7 +40,7 @@ const Login = () => {
   function handleSuccessfulLoginAttempt(userId: number) {
     navigate("/");
     setIsLoggedIn(true);
-    localStorage.setItem("id", userId.toString());
+    localStorage.setItem("id", data?.users?.[userId].id.toString());
   }
 
   function handleFailedLoginAttempt() {
@@ -48,7 +48,7 @@ const Login = () => {
   }
 
   return (
-    <div>
+    <>
       <Header />
       <div className="d-block text-center">
         Email: <br />
@@ -71,7 +71,7 @@ const Login = () => {
           Login
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -6,11 +6,9 @@ import Header from "../components/header";
 const Profile = () => {
   const navigate = useNavigate();
   const idIdentifier = localStorage.getItem("id");
-  const { loading, error, data } = useQuery(GET_USERS_BY_ID, {
+  const { loading, data } = useQuery(GET_USERS_BY_ID, {
     variables: { id: idIdentifier },
   });
-
-  const handleEdit = () => {};
 
   if (loading) {
     return (

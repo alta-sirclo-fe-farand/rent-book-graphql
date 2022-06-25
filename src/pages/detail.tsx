@@ -7,20 +7,20 @@ const Detail = () => {
   const navigate = useNavigate();
   const detail = useParams();
   const { loading, error, data } = useQuery(GET_BOOKS_BY_ID, {
-    variables: {id: detail.id}
+    variables: { id: detail.id },
   });
 
   const handleRent = (book_id: any) => {
     navigate(`/rent/${book_id}`);
-  }
+  };
 
-  if(loading) {
+  if (loading) {
     return (
       <div>
         <Header />
         <div>please wait..</div>
       </div>
-    )
+    );
   } else {
     return (
       <div>
@@ -28,9 +28,7 @@ const Detail = () => {
         <div className="container">
           {data.books.map((book: any) => {
             return (
-              <div
-                key={book.id}
-                className="py-5">
+              <div key={book.id} className="py-5">
                 <div className="row">
                   <div className="col-sm-6">
                     <img src={book.image} alt="" width="200px" />
@@ -42,16 +40,19 @@ const Detail = () => {
                     <button
                       className="btn btn-success"
                       type="submit"
-                      onClick={() => handleRent(book.id)}>Rent</button>
+                      onClick={() => handleRent(book.id)}
+                    >
+                      Rent
+                    </button>
                   </div>
                 </div>
               </div>
-            )
-            })}
+            );
+          })}
         </div>
       </div>
-    )
+    );
   }
-}
+};
 
 export default Detail;

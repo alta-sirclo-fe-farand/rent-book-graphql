@@ -7,7 +7,7 @@ const History = () => {
   const navigate = useNavigate();
   const idIdentifier = localStorage.getItem("id");
   const { loading, error, data } = useQuery(GET_RENTS_BY_ID, {
-    variables: {user_id: idIdentifier}
+    variables: { user_id: idIdentifier },
   });
   const [handleCompletedRent] = useMutation(PUT_RENTS);
 
@@ -15,30 +15,30 @@ const History = () => {
     handleCompletedRent({
       variables: { id: item.id },
       optimisticResponse: true,
-      update: caches => {
-        const rentStatus: any = caches.readQuery({ query: GET_RENTS_BY_ID })
+      update: (caches) => {
+        const rentStatus: any = caches.readQuery({ query: GET_RENTS_BY_ID });
         const updatedRentStatus = rentStatus.rents.map((rent: any) => {
-          if(rent.id === item.id) {
+          if (rent.id === item.id) {
             return { ...rent, returned: true };
           } else {
             return { ...rent };
           }
-        })
+        });
         caches.writeQuery({
           query: GET_RENTS_BY_ID,
-          data: { rent: updatedRentStatus }
-        })
-      }
-    })
+          data: { rent: updatedRentStatus },
+        });
+      },
+    });
   };
 
-  if(loading) {
+  if (loading) {
     return (
       <div>
         <Header />
         <p>please wait..</p>
       </div>
-    )
+    );
   } else {
     return (
       <div>
@@ -59,20 +59,19 @@ const History = () => {
                     <td>{rent.return_date}</td>
                     <td>{rent.returned.toString()}</td>
                     <td>
-                      <button
-                        type="submit"
-                        onClick={() => handleReturn(rent)}>Return
+                      <button type="submit" onClick={() => handleReturn(rent)}>
+                        Return
                       </button>
                     </td>
                   </tr>
-                )
+                );
               })}
             </tbody>
           </table>
         </section>
       </div>
-    )
+    );
   }
-}
+};
 
 export default History;

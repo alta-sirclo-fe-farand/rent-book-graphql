@@ -1,6 +1,10 @@
-import React from "react";
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+
+import LoginContext from "../context/LoginContext";
+
 import Home from "../pages/home";
 import Login from "../pages/login";
 import Register from "../pages/register";
@@ -21,22 +25,26 @@ const Navigation = () => {
     cache: new InMemoryCache(),
   });
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
-    <BrowserRouter>
-      <ApolloProvider client={client}>
-        <Routes>
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="detail/:id" element={<Detail />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="edit" element={<Edit />} />
-          <Route path="delete" element={<Delete />} />
-          <Route path="rent/:id" element={<Rent />} />
-          <Route path="history" element={<History />} />
-          <Route path="/" element={<Home />}></Route>
-        </Routes>
-      </ApolloProvider>
-    </BrowserRouter>
+    <LoginContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+      <BrowserRouter>
+        <ApolloProvider client={client}>
+          <Routes>
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="detail/:id" element={<Detail />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="edit" element={<Edit />} />
+            <Route path="delete" element={<Delete />} />
+            <Route path="rent/:id" element={<Rent />} />
+            <Route path="history" element={<History />} />
+            <Route path="/" element={<Home />}></Route>
+          </Routes>
+        </ApolloProvider>
+      </BrowserRouter>
+    </LoginContext.Provider>
   );
 };
 

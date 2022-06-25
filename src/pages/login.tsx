@@ -12,27 +12,35 @@ import LoginContext from "../context/LoginContext";
 // Components
 import Header from "../components/header";
 
+export type TLoginAttempt = {
+  id: number;
+  email: string;
+  password: string;
+};
+
 const Login = () => {
   const navigate = useNavigate();
   const { data } = useQuery(GET_USERS);
   const { setIsLoggedIn } = useContext(LoginContext);
 
-  const [loginAttempt, setLoginAttempt] = useState({
+  const [loginAttempt, setLoginAttempt] = useState<TLoginAttempt>({
     id: Math.random(),
     email: "",
     password: "",
   });
 
-  const handleLoginAttempt = (emailPass: any) => {
+  const handleLoginAttempt = () => {
     const id =
-      data?.users?.findIndex((ids: any) => ids.email === emailPass.email) || 0;
-    const success = id && data?.users?.[id].password === emailPass.password;
-    success ? handleSuccessfulLoginAttempt() : handleFailedLoginAttempt();
+      data?.users?.findIndex((ids: any) => ids.email === loginAttempt.email) ||
+      0;
+    const success = id && data?.users?.[id].password === loginAttempt.password;
+    success ? handleSuccessfulLoginAttempt(id) : handleFailedLoginAttempt();
   };
 
-  function handleSuccessfulLoginAttempt() {
+  function handleSuccessfulLoginAttempt(userId: number) {
     navigate("/");
     setIsLoggedIn(true);
+    localStorage.setItem("id", userId.toString());
   }
 
   function handleFailedLoginAttempt() {
@@ -59,7 +67,7 @@ const Login = () => {
           }
         />{" "}
         <br />
-        <button type="submit" onClick={() => handleLoginAttempt(loginAttempt)}>
+        <button type="submit" onClick={handleLoginAttempt}>
           Login
         </button>
       </div>

@@ -1,26 +1,50 @@
+// Dependencies
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_BOOKS_BY_ID, POST_RENTS } from "../queries/queries";
-import Header from "../components/header";
 import moment from "moment";
+
+// Queries and Mutations
+import { GET_BOOKS_BY_ID, POST_RENTS } from "../queries/queries";
+
+// Components
+import Header from "../components/header";
 
 const Detail = () => {
   const navigate = useNavigate();
   const detail = useParams();
+  const idIdentifier = localStorage.getItem("id");
   const [isRentPhase, setIsRentPhase] = useState<boolean>(false);
-  const [returnDate, setReturnDate] = useState(
-    moment().add(14, "days").calendar()
-  );
+  const [returnDateOption, setReturnDateOption] = useState<number>(1);
+
+  const formatReturnDate = () => {
+    const returnDate = moment().add(
+      returnDateOption === 1 ? 14 : returnDateOption === 2 ? 30 : 90
+    );
+    const year = parseInt(returnDate.format("YYYY"));
+    const month = parseInt(returnDate.format("MM"));
+    const date = parseInt(returnDate.format("DD"));
+    return new Date(year, month - 1, date);
+  };
+
   const { loading, error, data } = useQuery(GET_BOOKS_BY_ID, {
     variables: { id: detail.id },
   });
 
-  const handleRent = () => {
+  const [handleRent] = useMutation(POST_RENTS, {
+    variables: {
+      user_id: idIdentifier,
+      book_id: detail.id,
+      return_date: formatReturnDate(),
+    },
+    onCompleted: () => {
+      navigate("/profile");
+    },
+  });
+
+  const handleConfirm = () => {
     setIsRentPhase(true);
   };
-
-  const [handleNewRents] = useMutation(POST_RENTS);
 
   if (loading) {
     return (
@@ -49,7 +73,7 @@ const Detail = () => {
                       <button
                         className="btn btn-success"
                         type="submit"
-                        onClick={handleRent}
+                        onClick={handleConfirm}
                       >
                         Rent
                       </button>
@@ -60,15 +84,17 @@ const Detail = () => {
                         <select
                           name="returnDate"
                           id="returnDate"
-                          onChange={(opt) => setReturnDate(opt.target.value)}
+                          onChange={(opt) =>
+                            setReturnDateOption(parseInt(opt.target.value))
+                          }
                         >
-                          <option value={moment().add(14, "days").calendar()}>
+                          <option value={1}>
                             2 weeks ({moment().add(14, "days").calendar()})
                           </option>
-                          <option value={moment().add(30, "days").calendar()}>
+                          <option value={2}>
                             4 weeks ({moment().add(30, "days").calendar()})
                           </option>
-                          <option value={moment().add(90, "days").calendar()}>
+                          <option value={3}>
                             12 weeks ({moment().add(90, "days").calendar()})
                           </option>
                         </select>{" "}
@@ -76,7 +102,7 @@ const Detail = () => {
                         <button
                           className="mt-4"
                           type="submit"
-                          onClick={() => handleNewRents()}
+                          onClick={() => handleRent()}
                         >
                           Confirm Payment
                         </button>

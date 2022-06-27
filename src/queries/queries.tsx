@@ -68,7 +68,7 @@ export const GET_RENTS_BY_ID = gql`
 `;
 
 export const POST_RENTS = gql`
-  mutation ($book_id: Int!, $user_id: Int!, $return_date: Date!) {
+  mutation ($book_id: Int!, $user_id: Int!, $return_date: date!) {
     insert_rents(
       objects: {
         book_id: $book_id

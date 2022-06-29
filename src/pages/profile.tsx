@@ -128,7 +128,11 @@ const Profile = () => {
                     <td>{rent.return_date}</td>
                     <td>{rent.returned.toString()}</td>
                     <td>
-                      <button type="submit">Return</button>
+                      {rent.returned ? (
+                        <span>Returned</span>
+                      ) : (
+                        <button type="submit">Return</button>
+                      )}
                     </td>
                   </tr>
                 );

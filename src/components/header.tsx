@@ -24,6 +24,7 @@ const Header = () => {
   };
 
   const handleLogout = () => {
+    sessionStorage.removeItem("id");
     setIsLoggedIn(false);
     setSearchValue("");
     navigate("/");
@@ -84,23 +85,27 @@ const Header = () => {
         </button>
       </form>
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul className="navbar-nav">
-          <li className="nav-item">
-            <span className="nav-link" onClick={navigateHome}>
-              Home
-            </span>
-          </li>
-          <li className="nav-item">
-            <span className="nav-link" onClick={navigateProfile}>
-              Profile
-            </span>
-          </li>
-          <li className="nav-item">
-            <span className="nav-link" onClick={navigateHistory}>
-              History
-            </span>
-          </li>
-        </ul>
+        {isLoggedIn ? (
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <span className="nav-link" onClick={navigateHome}>
+                Home
+              </span>
+            </li>
+            <li className="nav-item">
+              <span className="nav-link" onClick={navigateProfile}>
+                Profile
+              </span>
+            </li>
+            <li className="nav-item">
+              <span className="nav-link" onClick={navigateHistory}>
+                History
+              </span>
+            </li>
+          </ul>
+        ) : (
+          <></>
+        )}
         <ul className="navbar-nav ml-auto">
           {isLoggedIn ? (
             <li className="nav-item">

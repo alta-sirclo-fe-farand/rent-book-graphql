@@ -40,7 +40,7 @@ const Login = () => {
   function handleSuccessfulLoginAttempt(userId: number) {
     navigate("/");
     setIsLoggedIn(true);
-    localStorage.setItem("id", data?.users?.[userId].id.toString());
+    sessionStorage.setItem("id", data?.users?.[userId].id.toString());
   }
 
   function handleFailedLoginAttempt() {

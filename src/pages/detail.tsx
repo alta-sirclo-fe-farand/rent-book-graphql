@@ -13,7 +13,7 @@ import Header from "../components/header";
 const Detail = () => {
   const navigate = useNavigate();
   const detail = useParams();
-  const idIdentifier = localStorage.getItem("id");
+  const idIdentifier = sessionStorage.getItem("id");
   const [isRentPhase, setIsRentPhase] = useState<boolean>(false);
   const [returnDateOption, setReturnDateOption] = useState<number>(1);
 

@@ -5,7 +5,7 @@ import { useMutation, useQuery } from "@apollo/client";
 
 const History = () => {
   const navigate = useNavigate();
-  const idIdentifier = localStorage.getItem("id");
+  const idIdentifier = sessionStorage.getItem("id");
   const { loading, error, data } = useQuery(GET_RENTS_BY_ID, {
     variables: { user_id: idIdentifier },
   });

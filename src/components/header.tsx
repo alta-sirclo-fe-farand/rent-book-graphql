@@ -25,16 +25,33 @@ const Header = () => {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    setSearchValue("");
     navigate("/");
   };
 
   const handleLogin = () => {
+    setSearchValue("");
     navigate("/login");
+  };
+
+  const navigateHome = () => {
+    setSearchValue("");
+    navigate("/");
+  };
+
+  const navigateProfile = () => {
+    setSearchValue("");
+    navigate("/profile");
+  };
+
+  const navigateHistory = () => {
+    setSearchValue("");
+    navigate("/history");
   };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a className="navbar-brand" href="/">
+      <a className="navbar-brand" href="/" onClick={navigateHome}>
         <img src={Logo} width="40" height="40" alt="" />
       </a>
       <button
@@ -69,17 +86,17 @@ const Header = () => {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav">
           <li className="nav-item">
-            <span className="nav-link" onClick={() => navigate("/")}>
+            <span className="nav-link" onClick={navigateHome}>
               Home
             </span>
           </li>
           <li className="nav-item">
-            <span className="nav-link" onClick={() => navigate("/profile")}>
+            <span className="nav-link" onClick={navigateProfile}>
               Profile
             </span>
           </li>
           <li className="nav-item">
-            <span className="nav-link" onClick={() => navigate("/history")}>
+            <span className="nav-link" onClick={navigateHistory}>
               History
             </span>
           </li>

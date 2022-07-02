@@ -19,7 +19,7 @@ import Header from "../components/header";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const idIdentifier = localStorage.getItem("id");
+  const idIdentifier = sessionStorage.getItem("id");
   const { setIsLoggedIn } = useContext(LoginContext);
   const [profile, setProfile] = useState<any>({});
   const [rents, setRents] = useState<any>({});

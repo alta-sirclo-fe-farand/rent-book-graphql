@@ -11,7 +11,7 @@ import Header from "../components/header";
 
 const Edit = () => {
   const navigate = useNavigate();
-  const idIdentifier = localStorage.getItem("id");
+  const idIdentifier = sessionStorage.getItem("id");
   const [changes, setChanges] = useState({
     name: "",
     email: "",

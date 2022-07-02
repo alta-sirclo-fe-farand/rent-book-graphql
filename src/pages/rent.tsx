@@ -6,7 +6,7 @@ import Header from "../components/header";
 import moment from "moment";
 
 const Rent = () => {
-  const idIdentifier = localStorage.getItem("id");
+  const idIdentifier = sessionStorage.getItem("id");
   const navigate = useNavigate();
   const detail = useParams();
   const [returnDate, setReturnDate] = useState(

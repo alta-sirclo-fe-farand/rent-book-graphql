@@ -1,30 +1,26 @@
-import { useContext, useState } from "react";
+// Dependencies
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useQuery } from "@apollo/client";
-import { GET_BOOKS } from "../queries/queries";
-
+// Context
 import LoginContext from "../context/LoginContext";
+import SearchContext from "../context/SearchContext";
 
+// Assets
 import Logo from "../assets/bootstrap-logo.svg";
 
 const Header = () => {
   const navigate = useNavigate();
   const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
-  const [search, setSearch] = useState<string>("");
-  const { loading, error, data } = useQuery(GET_BOOKS);
+  const { searchValue, setSearchValue } = useContext(SearchContext);
+
+  const handleOnChange = (e: any) => {
+    e.preventDefault();
+    setSearchValue(e.target.value);
+  };
 
   const handleSearch = () => {
-    // navigate("/");
-    // const bookTitles = data.books.map((book: any) => {
-    //   book.title
-    // });
-    // const filteredBooks = bookTitles.filter((bookTitle: string) => {
-    //   bookTitle.includes(search) === true
-    // });
-    // const searchResult = data.books.filter((book: any) => {
-    //   filteredBooks.includes(book.title) === true
-    // });
+    navigate(`/search/${searchValue}`);
   };
 
   const handleLogout = () => {
@@ -39,7 +35,7 @@ const Header = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <a className="navbar-brand" href="/">
-        <img src={Logo} width="40" height="40" />
+        <img src={Logo} width="40" height="40" alt="" />
       </a>
       <button
         className="navbar-toggler"
@@ -59,12 +55,13 @@ const Header = () => {
           type="search"
           placeholder="Search"
           aria-label="Search"
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={handleOnChange}
+          value={searchValue}
         />
         <button
           className="btn btn-outline-success my-2 my-sm-0"
           type="submit"
-          onClick={() => handleSearch()}
+          onClick={handleSearch}
         >
           Search
         </button>

@@ -111,3 +111,13 @@ export const DELETE_USERS_BY_ID = gql`
     }
   }
 `;
+
+export const GET_BOOKS_BY_SEARCH = gql`
+  query ($input: String!) {
+    books(where: { title: { _ilike: $input } }) {
+      id
+      title
+      image
+    }
+  }
+`;

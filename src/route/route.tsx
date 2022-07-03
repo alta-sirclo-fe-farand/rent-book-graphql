@@ -7,7 +7,7 @@ import LoginContext from "../context/LoginContext";
 import SearchContext from "../context/SearchContext";
 
 import Home from "../pages/home";
-import Login from "../pages/login";
+import Login from "../pages/login/login";
 import Register from "../pages/register";
 import Detail from "../pages/detail";
 import Edit from "../pages/profileEdit";

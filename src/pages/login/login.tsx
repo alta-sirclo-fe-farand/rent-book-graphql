@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 
 // Queries and Mutations
-import { GET_USERS } from "../queries/queries";
+import { GET_USERS } from "../../queries/queries";
 
 // Context
-import LoginContext from "../context/LoginContext";
+import LoginContext from "../../context/LoginContext";
 
-// Components
-import Header from "../components/header";
+// Styling
+import "./login.css";
 
 export type TLoginAttempt = {
   id: number;
@@ -28,6 +28,10 @@ const Login = () => {
     email: "",
     password: "",
   });
+
+  const handleOnChangeLoginForm = (e: any) => {
+    setLoginAttempt({ ...loginAttempt, [e.target.name]: e.target.value });
+  };
 
   const handleLoginAttempt = () => {
     const id =
@@ -49,28 +53,19 @@ const Login = () => {
 
   return (
     <>
-      <Header />
-      <div className="d-block text-center">
-        Email: <br />
-        <input
-          type="text"
-          onChange={(e) =>
-            setLoginAttempt({ ...loginAttempt, email: e.target.value })
-          }
-        />{" "}
-        <br />
-        Password: <br />
+      <form className="form-container">
+        <p>Email:</p>
+        <input type="text" name={"email"} onChange={handleOnChangeLoginForm} />
+        <p>Password:</p>
         <input
           type="password"
-          onChange={(e) =>
-            setLoginAttempt({ ...loginAttempt, password: e.target.value })
-          }
-        />{" "}
-        <br />
+          name={"password"}
+          onChange={handleOnChangeLoginForm}
+        />
         <button type="submit" onClick={handleLoginAttempt}>
           Login
         </button>
-      </div>
+      </form>
     </>
   );
 };

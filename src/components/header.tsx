@@ -13,15 +13,16 @@ const Header = () => {
   const navigate = useNavigate();
   const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
   const { searchValue, setSearchValue } = useContext(SearchContext);
+  let searchValueTemp = "";
 
-  const handleOnChange = (e: any) => {
-    e.preventDefault();
-    setSearchValue(e.target.value);
-  };
+  function handleOnChange(e: any) {
+    searchValueTemp = e.target.value;
+  }
 
-  const handleSearch = () => {
-    navigate(`/search/${searchValue}`);
-  };
+  function handleSearch(e: any) {
+    navigate(`/search/${searchValueTemp}`);
+    setSearchValue(searchValueTemp);
+  }
 
   const handleLogout = () => {
     sessionStorage.removeItem("id");
@@ -67,20 +68,18 @@ const Header = () => {
         <span className="navbar-toggler-icon"></span>
       </button>
 
-      <form className="form-inline my-2 my-lg-0 mr-auto">
+      <form
+        className="form-inline my-2 my-lg-0 mr-auto"
+        onSubmit={handleSearch}
+      >
         <input
           className="form-control mr-sm-2"
           type="search"
           placeholder="Search"
           aria-label="Search"
           onChange={handleOnChange}
-          value={searchValue}
         />
-        <button
-          className="btn btn-outline-success my-2 my-sm-0"
-          type="submit"
-          onClick={handleSearch}
-        >
+        <button className="btn btn-outline-success my-2 my-sm-0" type="submit">
           Search
         </button>
       </form>

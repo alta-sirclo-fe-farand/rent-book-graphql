@@ -55,12 +55,18 @@ const Login = () => {
     <>
       <form className="form-container">
         <p>Email:</p>
-        <input type="text" name={"email"} onChange={handleOnChangeLoginForm} />
+        <input
+          type="text"
+          name="email"
+          onChange={handleOnChangeLoginForm}
+          className="input-field"
+        />
         <p>Password:</p>
         <input
           type="password"
-          name={"password"}
+          name="password"
           onChange={handleOnChangeLoginForm}
+          className="input-field"
         />
         <button type="submit" onClick={handleLoginAttempt}>
           Login
